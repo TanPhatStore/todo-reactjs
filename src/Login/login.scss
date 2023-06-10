@@ -1,0 +1,24 @@
+
+.login {
+    background-color: #f6f8f9;
+    height: 700px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & .form-outline {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    & button {
+        margin: 0 5px;
+    }
+}
+
+Link {
+    text-decoration: none;
+    color: white;
+}
