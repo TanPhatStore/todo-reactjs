@@ -15,14 +15,14 @@ function App() {
   },[reload])
 
   const user = JSON.parse(localStorage.getItem('user'))
-  console.log(user)
+
   return (
     <Router>
       <div className="App">
         <Header />
         <Routes>
           <Route path="/" element={<Login reload={reload} setReload={setReload} />} />
-          {user.accessControl == true ? <Route path= '/home' element={<Content />} /> : <></>}
+          {(user != null && user.accessControl  == true) ? <Route path= '/home' element={<Content />} /> : <></>}
         </Routes>
       </div>
     </Router>
