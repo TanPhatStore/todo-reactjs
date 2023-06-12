@@ -1,9 +1,9 @@
 
 import './login.scss'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 
-function Login() {
+function Login({reload, setReload}) {
 
     const [users, setUsers] = useState([])
     const [link, setLink] = useState('/')
@@ -16,17 +16,44 @@ function Login() {
     const handleSignIn = () => {
         const username = document.querySelector('.txtusername')
         const password = document.querySelector('.txtpassword')
+        const access = document.querySelector('.access')
+        const usernamehidden = document.querySelector('.hiddenUserName')
+        const passwordhidden = document.querySelector('.hiddenPassWord')
+        const accesshidden = document.querySelector('.hiddenAccess')
         users.forEach(user => {
             if (user.userName == username.value && user.passWord == password.value) {
-                setLink('/home')
-            }
+
+            } 
         })
+    }
+    const navigate = useNavigate();
+
+    const handleClickSignIn = () => {
+        const username = document.querySelector('.txtusername')
+        const password = document.querySelector('.txtpassword')
+        let trueData = false
+        users.forEach(user => {
+            if (user.userName == username.value && user.passWord == password.value) {
+                trueData = true
+                setLink('/home')
+                setTimeout(() => {
+                    navigate('/home');
+                }, 100);
+            } 
+        })
+        const user = {
+            username : username.value,
+            password : password.value,
+            accessControl : trueData
+        }
+        localStorage.setItem('user', JSON.stringify(user));
+        setReload(!reload)
     }
 
     return ( 
         <div className='col-lg-12 login'>
             <h2>Login</h2><br></br>
-            <form method='POST' action='https://todo-nodejs-psi.vercel.app/insert-user' className='col-lg-4'>
+            <form method='POST' action='http://localhost:8080/insert-user' className='col-lg-4'>
                 <div class="form-outline mb-4">
                     <label class="form-label username" for="form2Example1">Username</label>
                     <input onChange={() => handleSignIn()} name='userName' type="text" id="form2Example1" class="form-control txtusername" />
@@ -49,9 +76,10 @@ function Login() {
                     <a href="#!">Forgot password?</a>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
-                <Link to={link}><button type="button" onClick={() => handleSignIn()} class="btn btn-primary btn-block mb-4">Sign in</button></Link>
-            
+
+                <button type="submit" className="btn btn-primary btn-block mb-4">Sign up</button>
+                <button onClick={() => handleClickSignIn()} type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+                
             </form>
         </div>
      );
